@@ -1,4 +1,5 @@
 using Application.Activities;
+using Application.Core;
 using Database;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,7 @@ namespace LetsMeet_API
             });
 
             services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
             services.AddControllers();
 
