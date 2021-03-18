@@ -1,4 +1,6 @@
+using Application.Activities;
 using Database;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,13 +33,6 @@ namespace LetsMeet_API
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LetsMeet_API", Version = "v1" });
-            });
-
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -45,6 +40,16 @@ namespace LetsMeet_API
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
+
+            services.AddMediatR(typeof(List.Handler).Assembly);
+
+            services.AddControllers();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LetsMeet_API", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
