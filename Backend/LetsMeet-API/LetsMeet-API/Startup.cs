@@ -1,3 +1,5 @@
+using Application.Activities;
+using FluentValidation.AspNetCore;
 using LetsMeet_API.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +22,10 @@ namespace LetsMeet_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationServices(Configuration);
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<Create>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Database;
 using Domain;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,14 @@ namespace Application.Activities
         public class Command : IRequest
         {
             public Activity Activity { get; set; }
+        }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Activity).SetValidator(new ActivityValidator());
+            }
         }
 
         public class Handler : IRequestHandler<Command>
