@@ -80,16 +80,22 @@ namespace LetsMeet_API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDto)
         {
-            if (!IsValidEmailAddress(registerDto.Email)) return ValidationProblem("Invalid Email Form");
+            if (!IsValidEmailAddress(registerDto.Email)) 
+            {
+                ModelState.AddModelError("email", "Invalid Email Form");
+                return ValidationProblem();
+            } 
 
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                return BadRequest("Email Taken");
+                ModelState.AddModelError("email", "Email taken");
+                return ValidationProblem();
             }
 
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
             {
-                return BadRequest("Username Taken");
+                ModelState.AddModelError("username", "Username taken");
+                return ValidationProblem();
             }
 
             var user = new AppUser
