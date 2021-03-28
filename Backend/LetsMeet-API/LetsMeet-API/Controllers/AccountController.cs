@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -44,6 +45,17 @@ namespace LetsMeet_API.Controllers
             return emailValidator.IsMatch(email);
         }
 
+        private UserDTO CreateUserObject(AppUser user)
+        {
+            return new UserDTO
+            {
+                DisplayName = user.DisplayName,
+                Image = null,
+                Token = _tokenService.CreateToken(user),
+                Username = user.UserName
+            };
+        }
+
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDto)
@@ -58,13 +70,7 @@ namespace LetsMeet_API.Controllers
 
             if(result.Succeeded)
             {
-                return new UserDTO
-                {
-                    DisplayName = user.DisplayName,
-                    Image = null,
-                    Token = _tokenService.CreateToken(user),
-                    Username = user.UserName
-                };
+                return CreateUserObject(user);
             }
 
             return Unauthorized();
@@ -97,16 +103,18 @@ namespace LetsMeet_API.Controllers
 
             if (result.Succeeded)
             {
-                return new UserDTO
-                {
-                    DisplayName = user.DisplayName,
-                    Image = null,
-                    Token = _tokenService.CreateToken(user),
-                    Username = user.UserName
-                };
+                return CreateUserObject(user);
             }
 
             return BadRequest("Problem registering user");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<UserDTO>> GetCurrentUser()
+        {
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            return CreateUserObject(user);
         }
     }
 }
