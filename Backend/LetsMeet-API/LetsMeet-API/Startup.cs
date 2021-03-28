@@ -2,8 +2,10 @@ using Application.Activities;
 using FluentValidation.AspNetCore;
 using LetsMeet_API.Extensions;
 using LetsMeet_API.MIddleware;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +26,12 @@ namespace LetsMeet_API
         {
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
-            services.AddControllers().AddFluentValidation(config =>
+            services.AddControllers(opt => 
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy)); // every endpoints requires authentication
+            })
+                .AddFluentValidation(config =>
             {
                 config.RegisterValidatorsFromAssemblyContaining<Create>();
             });
@@ -49,6 +56,7 @@ namespace LetsMeet_API
 
             app.UseCors("CorsPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
