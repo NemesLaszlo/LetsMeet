@@ -23,6 +23,7 @@ namespace LetsMeet_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationServices(Configuration);
+            services.AddIdentityServices(Configuration);
             services.AddControllers().AddFluentValidation(config =>
             {
                 config.RegisterValidatorsFromAssemblyContaining<Create>();
