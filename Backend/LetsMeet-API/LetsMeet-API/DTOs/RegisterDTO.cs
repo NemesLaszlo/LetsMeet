@@ -15,7 +15,7 @@ namespace LetsMeet_API.DTOs
         public string Email { get; set; }
 
         [Required]
-        [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$", ErrorMessage = "Password must be complex")]
+        [RegularExpression("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$", ErrorMessage = "Password must be complex")] // at least one number, at least one char lowercare and one upper case + lenght
         public string Password { get; set; }
 
         [Required]
