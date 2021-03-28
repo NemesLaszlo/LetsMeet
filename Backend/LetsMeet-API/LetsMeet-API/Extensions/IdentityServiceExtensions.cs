@@ -1,5 +1,6 @@
 ﻿using Database;
 using Domain;
+using LetsMeet_API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,8 @@ namespace LetsMeet_API.Extensions
             .AddEntityFrameworkStores<DataContext>()
             .AddSignInManager<SignInManager<AppUser>>();
 
-            services.AddAuthentication(); 
+            services.AddAuthentication();
+            services.AddScoped<TokenService>(); // Live time scoped
 
             return services;
         }
