@@ -48,7 +48,7 @@ namespace Application.Activities
                 // Name of the host of the activity
                 var hostUsername = activity.Attendees.FirstOrDefault(x => x.IsHost)?.AppUser?.UserName;
 
-                // Loggen in user alredy participate (maybe the host) on the activity (subscribed to the activity and his/her name already on the list so we can get that user) or not on the "list"
+                // Logged in user already participate (maybe the host) on the activity (subscribed to the activity and his/her name already on the list so we can get that user) or not on the "list"
                 var attendance = activity.Attendees.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
 
                 // Host can cancel the activity, but the host cant leave
@@ -63,7 +63,7 @@ namespace Application.Activities
                     activity.Attendees.Remove(attendance);
                 }
 
-                // Join to the activity if you are (loggen in user) not on the list
+                // Join to the activity if you are (logged in user) not on the list
                 if (attendance == null)
                 {
                     attendance = new ActivityAttendee
