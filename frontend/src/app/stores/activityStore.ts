@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Activity } from "../models/activity";
 import {format} from 'date-fns';
+import { store } from "./store";
 
 export default class ActivityStore {
     activityRegistry = new Map<string, Activity>()
@@ -69,6 +70,13 @@ export default class ActivityStore {
     }
 
     private setActivity = (activity: Activity) => {
+        const user = store.userStore.user
+        if(user) {
+            // user going to the event the isgoing flag shows that (he/she on the list)
+            activity.isGoing = activity.attendees!.some(a => a.username === user.username)
+            activity.isHost = activity.hostUsername === user.username
+            activity.host = activity.attendees?.find(x => x.username === activity.hostUsername)
+        }
         activity.date = new Date(activity.date!)
         this.activityRegistry.set(activity.id, activity)
     }
