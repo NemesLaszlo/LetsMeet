@@ -30,7 +30,7 @@ namespace Application.Core
             CreateMap<ActivityAttendee, Profiles.UserActivityDTO>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Activity.Id))
                 .ForMember(d => d.Title, o => o.MapFrom(s => s.Activity.Title))
-                .ForMember(d => d.Title, o => o.MapFrom(s => s.Activity.Title))
+                .ForMember(d => d.Category, o => o.MapFrom(s => s.Activity.Category))
                 .ForMember(d => d.Date, o => o.MapFrom(s => s.Activity.Date))
                 .ForMember(d => d.HostUsername, o => o.MapFrom(s => s.Activity.Attendees.FirstOrDefault(x => x.IsHost).AppUser.UserName));
         }

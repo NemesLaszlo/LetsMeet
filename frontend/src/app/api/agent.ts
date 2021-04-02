@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { toast } from 'react-toastify'
 import { history } from '../..'
 import { Activity, ActivityFormValues } from '../models/activity'
-import { Photo, Profile } from '../models/profile'
+import { Photo, Profile, UserActivity } from '../models/profile'
 import { User, UserFormValues } from '../models/user'
 import { store } from '../stores/store'
 
@@ -97,6 +97,7 @@ const Profiles = {
     deletePhoto: (id: string) => requests.delete(`/photos/${id}`),
     //  We are only allowing the user to update 2 of the properties contained in the Profile type. - Partial
     updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),
+    listActivities: (username: string, predicate: string) => requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
     
 }
 
