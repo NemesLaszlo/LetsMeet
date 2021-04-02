@@ -95,6 +95,9 @@ const Profiles = {
     },
     setMainPhoto: (id: string) => requests.put(`/photos/${id}/setMain`, {}),
     deletePhoto: (id: string) => requests.delete(`/photos/${id}`),
+    //  We are only allowing the user to update 2 of the properties contained in the Profile type. - Partial
+    updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),
+    
 }
 
 const agent = {

@@ -9,6 +9,13 @@ interface Props {
 }
 
 const ProfileCard = ({profile}: Props) => {
+
+    const truncate = (str: string | undefined) => {
+        if (str) {
+            return str.length > 40 ? str.substring(0, 37) + '...' : str;
+        }
+    }
+
     return (
         <Card as={Link} to={`/profiles/${profile.username}`}>
 
@@ -18,7 +25,7 @@ const ProfileCard = ({profile}: Props) => {
 
                 <Card.Header>{profile.displayName}</Card.Header>
 
-                <Card.Description>Bio goes here</Card.Description>
+                <Card.Description>{truncate(profile.bio)}</Card.Description>
 
             </Card.Content>
 
