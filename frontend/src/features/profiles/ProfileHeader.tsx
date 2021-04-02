@@ -1,8 +1,13 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite';
-import { Button, Divider, Grid, Header, Item, Reveal, Segment, Statistic } from 'semantic-ui-react';
+import { Button, Divider, Grid, Header, Item, Reveal, Segment, Statistic } from 'semantic-ui-react'
+import { Profile } from '../../app/models/profile'
 
-const ProfileHeader =  () => {
+interface Props {
+    profile: Profile;
+}
+
+const ProfileHeader =  ({profile}: Props) => {
     return (
         <Segment>
 
@@ -12,10 +17,10 @@ const ProfileHeader =  () => {
                     
                     <Item.Group>
                         <Item>
-                            <Item.Image avatar size='small' src={'/assets/user.png'} />
+                            <Item.Image avatar size='small' src={profile.image || '/assets/user.png'} />
 
                             <Item.Content verticalAlign='middle'>
-                                <Header as='h1' content='Displayname' />
+                                <Header as='h1' content={profile.displayName} />
                             </Item.Content>
                         </Item>
                     </Item.Group>
