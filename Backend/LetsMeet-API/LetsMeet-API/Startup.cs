@@ -2,6 +2,7 @@ using Application.Activities;
 using FluentValidation.AspNetCore;
 using LetsMeet_API.Extensions;
 using LetsMeet_API.MIddleware;
+using LetsMeet_API.SignalR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -62,6 +63,7 @@ namespace LetsMeet_API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }
