@@ -1,8 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import {Segment, Header, Comment, Form, Button} from 'semantic-ui-react'
+import { useStore } from '../../../app/stores/store';
+import { Link } from 'react-router-dom';
+import { formatDistanceToNow } from 'date-fns';
 
-const ActivityDetailedChat = () => {
+interface Props {
+    activityId: string;
+}
+
+const ActivityDetailedChat = ({ activityId }: Props) => {
+    const { commentStore } = useStore();
+
+    useEffect(() => {
+        if (activityId) {
+            commentStore.createHubConnection(activityId);
+        }
+        return () => {
+            commentStore.clearComments();
+        }
+    }, [commentStore, activityId]);
+    
     return (
         <>
             <Segment
@@ -18,34 +36,24 @@ const ActivityDetailedChat = () => {
             <Segment attached>
 
                 <Comment.Group>
+                    {commentStore.comments.map(comment => (
+                        <Comment key={comment.id}>
 
-                    <Comment>
-                        <Comment.Avatar src='/assets/user.png'/>
-                        <Comment.Content>
-                            <Comment.Author as='a'>Matt</Comment.Author>
-                            <Comment.Metadata>
-                                <div>Today at 5:42PM</div>
-                            </Comment.Metadata>
-                            <Comment.Text>How artistic!</Comment.Text>
-                            <Comment.Actions>
-                                <Comment.Action>Reply</Comment.Action>
-                            </Comment.Actions>
-                        </Comment.Content>
-                    </Comment>
+                            <Comment.Avatar src={comment.image || '/assets/user.png'}/>
 
-                    <Comment>
-                        <Comment.Avatar src='/assets/user.png'/>
-                        <Comment.Content>
-                            <Comment.Author as='a'>Joe Henderson</Comment.Author>
-                            <Comment.Metadata>
-                                <div>5 days ago</div>
-                            </Comment.Metadata>
-                            <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-                            <Comment.Actions>
-                                <Comment.Action>Reply</Comment.Action>
-                            </Comment.Actions>
-                        </Comment.Content>
+                            <Comment.Content>
+                                <Comment.Author as={Link} to={`/profiles/${comment.username}`}>{comment.displayName}</Comment.Author>
+
+                                <Comment.Metadata>
+                                    <div>{formatDistanceToNow(comment.createdAt)} ago</div>
+                                </Comment.Metadata>
+
+                                <Comment.Text style={{ whiteSpace: 'pre-wrap' }}>{comment.body}</Comment.Text>
+
+                            </Comment.Content>
+
                     </Comment>
+                    ))}
 
                     <Form reply>
                         <Form.TextArea/>
