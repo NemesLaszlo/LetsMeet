@@ -84,6 +84,10 @@ export default class ActivityStore {
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state
     }
+    
+    clearSelectedActivity = () => {
+        this.selectedActivity = undefined;
+    }
 
     createActivity = async (activity: ActivityFormValues) => {
         const user = store.userStore.user
