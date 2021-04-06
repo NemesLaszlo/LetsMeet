@@ -97,8 +97,8 @@ const Profiles = {
     deletePhoto: (id: string) => requests.delete(`/photos/${id}`),
     //  We are only allowing the user to update 2 of the properties contained in the Profile type. - Partial
     updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),
-    listActivities: (username: string, predicate: string) => requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
-    
+    listActivities: (username: string, predicate: string) => requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`),
+    updateFollowing: (username: string) => requests.post(`/follow/${username}`, {})
 }
 
 const agent = {
