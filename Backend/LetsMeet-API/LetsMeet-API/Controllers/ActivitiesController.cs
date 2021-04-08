@@ -12,7 +12,7 @@ namespace LetsMeet_API.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> GetActivities([FromQuery] PagingParams pagingParameter)
+        public async Task<IActionResult> GetActivities([FromQuery] ActivityParams pagingParameter)
         {
             return HandlePagedResult(await Mediator.Send(new List.Query {Params = pagingParameter }));
         }
