@@ -32,6 +32,7 @@ const ActivityDashboard = () => {
                     <>
                         <ActivityListItemPlaceholder />
                         <ActivityListItemPlaceholder />
+                        <ActivityListItemPlaceholder />
                     </>
                 ) : (
                     <InfiniteScroll
