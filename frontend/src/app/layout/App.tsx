@@ -21,10 +21,10 @@ const App = () => {
   const {commonStore, userStore} = useStore()
 
   useEffect(() => {
-    if(commonStore.token) {
-      userStore.getUser().finally(() => commonStore.setAppLoaded())
+    if (commonStore.token) {
+      userStore.getUser().finally(() => commonStore.setAppLoaded());
     } else {
-      commonStore.setAppLoaded()
+      userStore.getFacebookLoginStatus().then(() => commonStore.setAppLoaded());
     }
   }, [commonStore, userStore])
 
