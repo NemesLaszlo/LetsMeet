@@ -98,9 +98,6 @@ namespace LetsMeet_API.Controllers
 
             if (user == null) return Unauthorized("Invalid Email");
 
-            // Temp
-            if (user.UserName == "bob") user.EmailConfirmed = true;
-
             if (!user.EmailConfirmed) return Unauthorized("Email not confirmed");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
@@ -116,7 +113,7 @@ namespace LetsMeet_API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDto)
+        public async Task<IActionResult> Register(RegisterDTO registerDto)
         {
             if (!IsValidEmailAddress(registerDto.Email)) 
             {
@@ -192,6 +189,41 @@ namespace LetsMeet_API.Controllers
             await _emailSender.SendEmailAsync(user.Email, "Please verify email", message);
 
             return Ok("Email verification link resent");
+        }
+
+        [AllowAnonymous]
+        [HttpPost("passwordReset")]
+        public async Task<IActionResult> PasswordReset(string token, string email, PasswordResetDTO resetDto)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null) return Unauthorized();
+
+            var decodedTokenBytes = WebEncoders.Base64UrlDecode(token);
+            var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
+            var result = await _userManager.ResetPasswordAsync(user, decodedToken, resetDto.newPassword);
+
+            if (!result.Succeeded) return BadRequest("Could not reset password");
+
+            return Ok("Password reset - you can now login");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("passwordResetRequest")]
+        public async Task<IActionResult> PasswordResetRequest(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null) return Unauthorized();
+
+            var origin = Request.Headers["origin"]; // request comes from
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+            var resetUrl = $"{origin}/account/passwordReset?token={token}&email={user.Email}";
+            var message = $"<p>Please click the below link to reset your password:</p><p><a href='{resetUrl}'>Click to reset password</a></p>";
+
+            await _emailSender.SendEmailAsync(user.Email, "Password reset", message);
+
+            return Ok("Password reset link send");
         }
 
         [HttpGet]
