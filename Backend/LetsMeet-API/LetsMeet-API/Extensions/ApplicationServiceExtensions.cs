@@ -2,6 +2,7 @@
 using Application.Core;
 using Application.Interfaces;
 using Database;
+using Infrastructure.Email;
 using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
@@ -42,6 +43,7 @@ namespace LetsMeet_API.Extensions
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.AddSignalR();
+            services.AddScoped<EmailSender>();
 
             services.AddSwaggerGen(c =>
             {
