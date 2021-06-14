@@ -1,5 +1,6 @@
 # LetsMeet
 
+[![Build status](https://img.shields.io/github/workflow/status/alexalok/dotAPNS/Test)](https://github.com/NemesLaszlo/LetsMeet/actions)
 [![CodeFactor](https://www.codefactor.io/repository/github/nemeslaszlo/letsmeet/badge?s=431a35febec3d2889c2e51f66d16cc4fe7f22bbb)](https://www.codefactor.io/repository/github/nemeslaszlo/letsmeet)
 
 LetsMeet is a meetup / workshop / event organizer and handler site, where you can post your coming events and interact with others. Lets organize your next futuristic tech event or any other what comes to your mind.
